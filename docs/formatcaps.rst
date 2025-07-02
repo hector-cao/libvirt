@@ -409,7 +409,7 @@ As a consequence, the list of detected features rarely is a perfect match to a b
 Sometimes that just means that you'll get the right name, but still a long list of features enabled or disabled on top of it.
 But in other times it might even lead to the situation that a different named baseline model, usually an older CPU generation, is closer to the features libvirt finds in the CPU present in the system.
 In that cases it is closer to express the capabilities via an older name e.g. ``Broadwell`` plus some features than calling it ``Icelake`` with many more features disabled.
-Due to that Libvirt is unable to display the correct CPU model name for some CPU generations, but that is fine - the purpose is not to confirm what generation branding the chip was sold by, but instead the shortest name +/- features to express its capabilities.
+Due to all that Libvirt might sometimes display the an unexpected CPU model name, but that is fine - the purpose is not to confirm what generation-branding the chip was sold by, but instead the shortest set of named baseline model +/- features to express its capabilities.
 
 Some effort has been done to address these situations (like ``-noTSX`` variants are added to cover the missing TSX features mentioned above) and offer users the ability to more often see the CPU model name they expect, but this can never be fully complete. Therefore users *should not* expect to have the reported CPU model name to have any implications other than that of a named baseline to build the complete available feature set of the Host CPU.
 
