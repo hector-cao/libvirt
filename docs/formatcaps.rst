@@ -375,7 +375,9 @@ capabilities enabled in the chip and BIOS you will see:
 Host CPU model and features
 ~~~~~~~~~~~~~~~~~
 
-As desbcribed in the (`Host capabilities`_) section, libvirt exposes to users the list of Host CPU features. libvirt has a special way to expose this list, instead of providing the full list of features, libvirt specifies a CPU model name as baseline and additionnal features on top of it. 
+As desbcribed in the (`Host capabilities`_) section, libvirt exposes to users the list of Host CPU features. libvirt has a special way to expose this list, instead of providing the full set of features, libvirt specifies a CPU model name as baseline and additionnal features on top of it. 
+
+Example:
 
 ::
 
@@ -395,7 +397,12 @@ As desbcribed in the (`Host capabilities`_) section, libvirt exposes to users th
         <feature name='tm'/>
 
 
-The ideal case would be the returned baseline CPU model matches exactly the physical machine and no additionnal feature is needed, for example, if you are running on a `Icelake` Server CPU, the returned CPU model name is `Icelake-Server`. However, this ideal situation does not happen most of the times for 2 main reasons:
+The ideal case would be the returned baseline CPU model matches exactly the physical machine and no additionnal feature is needed, for example, if you are running on a ``Icelake`` Server CPU, the returned CPU model name is ``Icelake-Server``. However, this ideal situation does not happen most of the times for 2 main reasons:
 
-- Since, it is not practical to have a database listing all known CPU models, libvirt only has a small list of baseline CPU model names (`usr/share/libvirt/cpu_map/`). It chooses the one that shares the greatest number of features (CPUID bits and MSR features) with the actual host physical machine CPU and then lists the remaining named features.
-- some features might be unavailable for various reasons (BIOS and kernel configuration). The list of detected features only matches an older CPU generation with some additionnal features (e.g . `Broadwell` is detected on an `Icelake` server). One typical example where this situation happens is related to the [TSX mitigation](https://docs.kernel.org/arch/x86/tsx_async_abort.html).  
+- Since, it is not practical to have a database listing all known CPU models, libvirt only has a small list of baseline CPU model names (``usr/share/libvirt/cpu_map/``). It chooses the one that shares the greatest number of features (CPUID bits and MSR features) with the actual host physical machine CPU and then lists the remaining named features.
+
+- Some features might be unavailable for various reasons (BIOS and kernel configuration). As a consequence, the list of detected features only matches an older CPU generation with some additionnal features (e.g . Intel ``Broadwell`` is detected on an Intel ``Icelake`` server). One typical example where this situation happens is related to the TSX mitigation[1]. As a mitigation to the TAA side channel attack, the linux kernel disables by default TSX and its 2 features ``rtm`` and ``hle``. Since most popular Linux distros (Ubuntu, ...) keep this default behavior and these 2 features are disabled, libvirt is unable to display the correct CPU model name for CPU generations that are affected by this mitigation (Intel ``Icelake``, ``Sapphire Rapids``, ``Granite Rapids``, ..).
+
+Even though, some effort has been done to address these situations (``-noTSX`` variants are added to cover the missing TSX features) and offer users the ability to have the exact CPU model name they are running on, this effort is not complete and users *should not* expect to have the matching CPU model name but should consider the returned CPU model name as a baseline to build the complete available feature set of the Host CPU.
+
+[1] https://docs.kernel.org/arch/x86/tsx_async_abort.html
