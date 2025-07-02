@@ -403,6 +403,13 @@ The ideal case would be that the baseline CPU model definition matches exactly t
 
 - Some features might be in the hardware, but unavailable for various reasons (BIOS and kernel configuration, disabled for security, ...). One typical example where this situation happens is related to the TSX mitigation [1]. As a mitigation to the TAA side channel attack, the Linux kernel disables by default TSX and its 2 features, ``rtm`` and ``hle``. Since many Linux distributions keep this safer default behavior these 2 features appear as disabled.
 
-Even though some effort has been done to address these situations (``-noTSX`` variants are added to cover the missing TSX features) and offer users the ability to have the exact CPU model name they are running on, this effort is not complete, and users *should not* expect to have the matching CPU model name but should consider the returned CPU model name as a baseline to build the complete available feature set of the Host CPU.
+
+As a consequence, the list of detected features rarely match a named and defined CPU type.
+Sometimes that just means that you'll get the right name, but still a long list of features enabled or disabled on top of it.
+But in other times it might even lead to the situation that a different named CPU type, usually older CPU generation, is closer to the features libvirt finds in the CPU present in the system.
+In that cases it is closer to express the capabilities via an older name e.g. ``Broadwell`` plus some features than calling it ``Icelake`` with many more features disabled.
+Due to that Libvirt is unable to display the correct CPU model name for some CPU generations, but that is fine - the purpose is not to confirm what generation branding the chip was sold by, but instead the shortest name +/- features to express its capabilities.
+
+Some effort has been done to address these situations (like ``-noTSX`` variants are added to cover the missing TSX features mentioned above) and offer users the ability to more often see the CPU model name they expect, but this can never be fully complete. Therefore users *should not* expect to have the reported CPU model name to have any implications other than that of a named baseline to build the complete available feature set of the Host CPU.
 
 [1] https://docs.kernel.org/arch/x86/tsx_async_abort.html
