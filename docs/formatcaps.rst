@@ -404,7 +404,7 @@ The ideal case would be that the baseline CPU model definition matches exactly t
 - Some features might be in the hardware, but unavailable for various reasons (BIOS and kernel configuration, disabled for security, ...). One typical example where this situation happens is related to the TSX mitigation [1]. As a mitigation to the TAA side channel attack, the Linux kernel disables by default TSX and its 2 features, ``rtm`` and ``hle``. Since many Linux distributions keep this safer default behavior these 2 features appear as disabled.
 
 
-It chooses the named baseline model that shares the greatest number of features (CPUID bits and MSR features) with the actual CPU present in the machine and then lists the remaining named features as difference to that known name.
+It chooses the named baseline model that shares the greatest number of features (CPUID bits and MSR features) with the actual CPU present in the machine and then lists the remaining named features as differences to that known name.
 As a consequence, the list of detected features rarely is a perfect match to a baseline model name.
 Sometimes that just means that you'll get the right name, but still a long list of features enabled or disabled on top of it.
 But in other times it might even lead to the situation that a different named baseline model, usually an older CPU generation, is closer to the features libvirt finds in the CPU present in the system.
