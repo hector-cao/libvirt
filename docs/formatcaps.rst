@@ -371,3 +371,46 @@ capabilities enabled in the chip and BIOS you will see:
     </guest>
 
   </capabilities>
+
+Host CPU model and features
+~~~~~~~~~~~~~~~~~
+
+As described in the (`Host capabilities`_) section, libvirt exposes to users the list of Host CPU features. Libvirt has a special way to expose this list: Instead of providing the full - and thereby often very long - set of features, libvirt specifies a CPU model name as baseline and additional features on top of it. 
+
+Example:
+
+::
+
+  <capabilities>
+
+    <host>
+      <uuid>7b55704c-29f4-11b2-a85c-9dc6ff50623f</uuid>
+      <cpu>
+        <arch>x86_64</arch>
+        <model>Skylake-Client-noTSX-IBRS</model>
+        <vendor>Intel</vendor>
+        ...
+        <feature name='ds'/>
+        <feature name='acpi'/>
+        <feature name='ss'/>
+        <feature name='ht'/>
+        <feature name='tm'/>
+        ...
+
+The ideal case would be that the baseline CPU model definition matches exactly the CPU present in the system and no additional feature is needed to express the capabilities of the CPU. For example, if you are running on a Server CPU you bought as ``Icelake`` type, the returned CPU model name could be ``Icelake-Server``. However, this ideal situation rarely happens, for two main reasons:
+
+- Manufacturers do not ship one (=1) type of CPU under a given name, there are various different SKUs with different features under the same name. Yet it is not practical to have a database listing all of those variants. Instead Libvirt only has a list of a baseline CPU model names - roughly one per generation - in ``/usr/share/libvirt/cpu_map/``.
+
+- Some features might be in the hardware, but unavailable for various reasons (BIOS and kernel configuration, disabled for security, ...). One typical example where this situation happens is related to the TSX mitigation [1]. As a mitigation to the TAA side channel attack, the Linux kernel disables by default TSX and its 2 features, ``rtm`` and ``hle``. Since many Linux distributions keep this safer default behavior these 2 features appear as disabled.
+
+
+It chooses the named baseline model that shares the greatest number of features (CPUID bits and MSR features) with the actual CPU present in the machine and then lists the remaining named features as differences to that known name.
+As a consequence, the list of detected features is rarely a perfect match to a baseline model name.
+Sometimes that just means that you'll get the right name, but still a long list of features enabled or disabled on top of it.
+At other times it might even lead to a different named baseline model, usually an older CPU generation, being closer to the features libvirt finds in the CPU present in the system.
+In that cases it is closer to express the capabilities via an older name e.g. ``Broadwell`` plus some features than calling it ``Icelake`` with many more features disabled.
+Due to all that Libvirt might sometimes display the an unexpected CPU model name, but that is fine - the purpose is not to confirm what generation-branding the chip was sold by, but instead the shortest set of named baseline model +/- features to express its capabilities.
+
+Some effort has been done to address these situations (like ``-noTSX`` variants are added to cover the missing TSX features mentioned above) and offer users the ability to more often see the CPU model name they expect, but this can never be fully complete. Therefore users *should not* expect to have the reported CPU model name to have any implications other than that of a named baseline to build the complete available feature set of the Host CPU.
+
+[1] https://docs.kernel.org/arch/x86/tsx_async_abort.html
