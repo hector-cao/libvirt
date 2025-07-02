@@ -395,7 +395,7 @@ Example:
         <feature name='ss'/>
         <feature name='ht'/>
         <feature name='tm'/>
-
+...
 
 The ideal case would be that the baseline CPU model definition matches exactly the CPU present in the system and no additional feature is needed to express the capabilities of the CPU. For example, if you are running on a Server CPU you bought as ``Icelake`` type, the returned CPU model name could be ``Icelake-Server``. However, this ideal situation does rarely happen, mainly for two reasons:
 
