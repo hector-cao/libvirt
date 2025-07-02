@@ -397,7 +397,7 @@ Example:
         <feature name='tm'/>
 
 
-The ideal case would be the returned baseline CPU model matching exactly the physical machine and no additional feature being needed, for example, if you are running on an ``Icelake`` Server CPU, the returned CPU model name is ``Icelake-Server``. However, this ideal situation does not happen most of the time for 2 main reasons:
+The ideal case would be that the baseline CPU model definition matches exactly the CPU present in the system and no additional feature is needed to express the capabilities of the CPU. For example, if you are running on a Server CPU you bought as ``Icelake`` type, the returned CPU model name could be ``Icelake-Server``. However, this ideal situation does rarely happen, mainly for two reasons:
 
 - Since it is not practical to have a database listing all known CPU models, libvirt only has a small list of baseline CPU model names (``usr/share/libvirt/cpu_map/``). It chooses the one that shares the greatest number of features (CPUID bits and MSR features) with the actual host physical machine CPU and then lists the remaining named features.
 
