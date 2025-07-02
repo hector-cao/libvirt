@@ -375,7 +375,7 @@ capabilities enabled in the chip and BIOS you will see:
 Host CPU model and features
 ~~~~~~~~~~~~~~~~~
 
-As desbcribed in the (`Host capabilities`_) section, libvirt exposes to users the list of Host CPU features. Libvirt has a special way to expose this list: Instead of providing the full - and thereby often very long - set of features, libvirt specifies a CPU model name as baseline and additional features on top of it. 
+As described in the (`Host capabilities`_) section, libvirt exposes to users the list of Host CPU features. Libvirt has a special way to expose this list: Instead of providing the full - and thereby often very long - set of features, libvirt specifies a CPU model name as baseline and additional features on top of it. 
 
 Example:
 
