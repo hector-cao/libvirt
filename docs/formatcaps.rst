@@ -407,7 +407,7 @@ The ideal case would be that the baseline CPU model definition matches exactly t
 It chooses the named baseline model that shares the greatest number of features (CPUID bits and MSR features) with the actual CPU present in the machine and then lists the remaining named features as differences to that known name.
 As a consequence, the list of detected features is rarely a perfect match to a baseline model name.
 Sometimes that just means that you'll get the right name, but still a long list of features enabled or disabled on top of it.
-But in other times it might even lead to the situation that a different named baseline model, usually an older CPU generation, is closer to the features libvirt finds in the CPU present in the system.
+At other times it might even lead to a different named baseline model, usually an older CPU generation, being closer to the features libvirt finds in the CPU present in the system.
 In that cases it is closer to express the capabilities via an older name e.g. ``Broadwell`` plus some features than calling it ``Icelake`` with many more features disabled.
 Due to all that Libvirt might sometimes display the an unexpected CPU model name, but that is fine - the purpose is not to confirm what generation-branding the chip was sold by, but instead the shortest set of named baseline model +/- features to express its capabilities.
 
